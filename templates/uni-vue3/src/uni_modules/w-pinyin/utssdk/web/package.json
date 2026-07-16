@@ -1,0 +1,7 @@
+{
+	"name": "w-pinyin-web",
+	"version": "1.0.0",
+	"dependencies": {
+		"pinyin-pro": "^3.1.0"
+	}
+}

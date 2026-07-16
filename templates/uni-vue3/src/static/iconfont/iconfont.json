@@ -1,0 +1,240 @@
+{
+  "id": "5039279",
+  "name": "中仑-供应商采购网",
+  "font_family": "scmsiconfont",
+  "css_prefix_text": "icon-scms",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "46963687",
+      "name": "eye-close-line",
+      "font_class": "eye-close-line",
+      "unicode": "e639",
+      "unicode_decimal": 58937
+    },
+    {
+      "icon_id": "46888184",
+      "name": "phone-fill",
+      "font_class": "a-Frame1",
+      "unicode": "e638",
+      "unicode_decimal": 58936
+    },
+    {
+      "icon_id": "46884696",
+      "name": "shop-fill",
+      "font_class": "shop-fill",
+      "unicode": "e637",
+      "unicode_decimal": 58935
+    },
+    {
+      "icon_id": "46846559",
+      "name": "eye-line",
+      "font_class": "eye-line1",
+      "unicode": "e636",
+      "unicode_decimal": 58934
+    },
+    {
+      "icon_id": "46840221",
+      "name": "home-fill",
+      "font_class": "home-fill",
+      "unicode": "e635",
+      "unicode_decimal": 58933
+    },
+    {
+      "icon_id": "46839626",
+      "name": "warning-fill",
+      "font_class": "warning-fill",
+      "unicode": "e634",
+      "unicode_decimal": 58932
+    },
+    {
+      "icon_id": "46837671",
+      "name": "user-fill",
+      "font_class": "user-fill",
+      "unicode": "e633",
+      "unicode_decimal": 58931
+    },
+    {
+      "icon_id": "46837659",
+      "name": "map-fill",
+      "font_class": "map-fill",
+      "unicode": "e632",
+      "unicode_decimal": 58930
+    },
+    {
+      "icon_id": "46825218",
+      "name": "airplane-fill",
+      "font_class": "airplane-fill",
+      "unicode": "e630",
+      "unicode_decimal": 58928
+    },
+    {
+      "icon_id": "46811418",
+      "name": "setting-line",
+      "font_class": "setting-line",
+      "unicode": "e62f",
+      "unicode_decimal": 58927
+    },
+    {
+      "icon_id": "46802329",
+      "name": "check-line",
+      "font_class": "check-line",
+      "unicode": "e62e",
+      "unicode_decimal": 58926
+    },
+    {
+      "icon_id": "46795863",
+      "name": "add-line",
+      "font_class": "add-line",
+      "unicode": "e62d",
+      "unicode_decimal": 58925
+    },
+    {
+      "icon_id": "46787740",
+      "name": "photo-line",
+      "font_class": "photo-line",
+      "unicode": "e62c",
+      "unicode_decimal": 58924
+    },
+    {
+      "icon_id": "46783273",
+      "name": "file-list-fill",
+      "font_class": "file-list-3-fill",
+      "unicode": "e606",
+      "unicode_decimal": 58886
+    },
+    {
+      "icon_id": "46771521",
+      "name": "store-2-line",
+      "font_class": "store-2-line",
+      "unicode": "e605",
+      "unicode_decimal": 58885
+    },
+    {
+      "icon_id": "46747906",
+      "name": "add-circle-line",
+      "font_class": "add-circle-line",
+      "unicode": "e622",
+      "unicode_decimal": 58914
+    },
+    {
+      "icon_id": "46747121",
+      "name": "trash-line",
+      "font_class": "trash-line",
+      "unicode": "e620",
+      "unicode_decimal": 58912
+    },
+    {
+      "icon_id": "46747110",
+      "name": "arrow-left-line",
+      "font_class": "arrow-left-line",
+      "unicode": "e61f",
+      "unicode_decimal": 58911
+    },
+    {
+      "icon_id": "46747085",
+      "name": "arrow-down-fill",
+      "font_class": "arrow-down-fill",
+      "unicode": "e61e",
+      "unicode_decimal": 58910
+    },
+    {
+      "icon_id": "46747069",
+      "name": "map-with-mark",
+      "font_class": "map-with-mark",
+      "unicode": "e61d",
+      "unicode_decimal": 58909
+    },
+    {
+      "icon_id": "46747067",
+      "name": "file-copy",
+      "font_class": "file-copy",
+      "unicode": "e61c",
+      "unicode_decimal": 58908
+    },
+    {
+      "icon_id": "46747037",
+      "name": "search-line",
+      "font_class": "search-line",
+      "unicode": "e61b",
+      "unicode_decimal": 58907
+    },
+    {
+      "icon_id": "46746985",
+      "name": "checked-fill",
+      "font_class": "checked-fill",
+      "unicode": "e619",
+      "unicode_decimal": 58905
+    },
+    {
+      "icon_id": "46747031",
+      "name": "image-add-fill",
+      "font_class": "image-add-fill",
+      "unicode": "e61a",
+      "unicode_decimal": 58906
+    },
+    {
+      "icon_id": "46746933",
+      "name": "location-line",
+      "font_class": "location-line",
+      "unicode": "e618",
+      "unicode_decimal": 58904
+    },
+    {
+      "icon_id": "46746900",
+      "name": "eye-line",
+      "font_class": "eye-line",
+      "unicode": "e616",
+      "unicode_decimal": 58902
+    },
+    {
+      "icon_id": "46746890",
+      "name": "file-edit-line",
+      "font_class": "file-edit-line",
+      "unicode": "e615",
+      "unicode_decimal": 58901
+    },
+    {
+      "icon_id": "46746887",
+      "name": "close-line",
+      "font_class": "close-line",
+      "unicode": "e614",
+      "unicode_decimal": 58900
+    },
+    {
+      "icon_id": "46746836",
+      "name": "file-list-line",
+      "font_class": "file-list-line",
+      "unicode": "e611",
+      "unicode_decimal": 58897
+    },
+    {
+      "icon_id": "46746832",
+      "name": "phone-line",
+      "font_class": "phone-line",
+      "unicode": "e610",
+      "unicode_decimal": 58896
+    },
+    {
+      "icon_id": "46746758",
+      "name": "arrow-down-line",
+      "font_class": "arrow-down-line",
+      "unicode": "e60e",
+      "unicode_decimal": 58894
+    },
+    {
+      "icon_id": "46746805",
+      "name": "arrow-right-line",
+      "font_class": "arrow-right-line",
+      "unicode": "e60f",
+      "unicode_decimal": 58895
+    },
+    {
+      "icon_id": "46746509",
+      "name": "map-line",
+      "font_class": "map-line",
+      "unicode": "e60d",
+      "unicode_decimal": 58893
+    }
+  ]
+}

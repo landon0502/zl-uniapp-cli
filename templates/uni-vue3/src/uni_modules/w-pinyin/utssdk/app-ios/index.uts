@@ -1,0 +1,7 @@
+export function chineseToPinyin(text: string): string {
+  let mutableString = new NSMutableString()
+  mutableString.setString(text)
+  CFStringTransform(mutableString, null, kCFStringTransformToLatin, false)
+  CFStringTransform(mutableString, null, kCFStringTransformStripCombiningMarks, false)
+  return mutableString as string
+}

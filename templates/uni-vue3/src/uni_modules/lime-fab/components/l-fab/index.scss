@@ -1,0 +1,67 @@
+@import '~@/uni_modules/lime-style/index.scss';
+
+/* #ifdef  uniVersion >= 4.75 */ 
+$use-css-var: true;
+/* #endif */
+
+$fab-width: create-var(fab-width, 48px);
+$fab-height: create-var(fab-height, 48px);
+$fab-initial-gap: create-var(fab-initial-gap, 24px);
+$fab-icon-size: create-var(fab-icon-size, 28px);
+$fab-bg-color: create-var(fab-bg-color, $primary-color);
+$fab-color: create-var(fab-color, white);
+$fab-z-index: create-var(fab-z-index, 999);
+$fab-border-radius: create-var(fab-border-radius, 999px);
+
+
+.l-fab {
+	/* #ifdef APP-NVUE || UNI-APP-X && APP */
+	position: fixed;
+	left: 0;
+	top: 0;
+	right: $fab-initial-gap;
+	bottom: $fab-initial-gap;
+	transition: transform,opacity 0.3s;
+	/* #endif */
+	width: $fab-width;
+	height: $fab-height;
+	
+	justify-content: center;
+	align-items: center;
+	
+	background-color: $fab-bg-color;
+	
+	border-radius: $fab-border-radius;
+	
+	
+	/* #ifndef APP-NVUE || UNI-APP-X && APP */
+	color: $fab-color;
+	
+	display: flex;
+	user-select: none;
+	touch-action: none;
+	pointer-events: auto;
+	/* #endif  */
+	
+	/* #ifndef UNI-APP-X */
+	&:active,&--active {
+		opacity: 0.9;
+	}
+	&-wrapper {
+		position: fixed;
+		/* #ifndef APP-NVUE */
+		width: calc(100% - $fab-initial-gap - $fab-initial-gap);
+		height: calc(100% - $fab-initial-gap - $fab-initial-gap);
+		pointer-events: none;
+		/* #endif */
+		
+		// left: $fab-initial-gap;
+		// bottom: $fab-initial-gap;
+		// inset: $fab-initial-gap;
+		z-index: $fab-z-index;
+	}
+	/* #endif  */
+	&__icon {
+		font-size: $fab-icon-size;
+	}
+}
