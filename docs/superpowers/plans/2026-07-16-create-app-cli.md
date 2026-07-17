@@ -2,6 +2,7 @@
 change: create-app-cli
 design-doc: docs/superpowers/specs/2026-07-16-create-app-cli-design.md
 base-ref: HEAD
+archived-with: 2026-07-17-create-app-cli
 ---
 
 # create-app CLI 实施计划

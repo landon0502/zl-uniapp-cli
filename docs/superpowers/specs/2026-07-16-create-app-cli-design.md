@@ -2,6 +2,8 @@
 comet_change: create-app-cli
 role: technical-design
 canonical_spec: openspec
+archived-with: 2026-07-17-create-app-cli
+status: final
 ---
 
 # create-app CLI 技术设计
