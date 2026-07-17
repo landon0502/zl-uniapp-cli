@@ -1,0 +1,22 @@
+{
+  "name": "@wh-templates/shared",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "exports": { ".": "./dist/index.js" },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm",
+    "test": "vitest run"
+  },
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "fs-extra": "^11.3.6"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.0",
+    "@types/node": "^22.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.8.0",
+    "vitest": "^3.0.0"
+  }
+}
