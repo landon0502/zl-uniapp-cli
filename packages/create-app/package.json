@@ -2,7 +2,7 @@
   "name": "create-app",
   "version": "1.0.0",
   "type": "module",
-  "bin": { "create-app": "./dist/index.js" },
+  "bin": { "create-app": "./bin/index.js" },
   "main": "dist/index.js",
   "scripts": {
     "build": "tsup src/index.ts --format esm",
