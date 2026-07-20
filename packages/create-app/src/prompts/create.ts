@@ -1,6 +1,6 @@
 import inquirer from 'inquirer'
-import { discoverTemplates } from '@zl-uniapp-cli/shared'
-import { KEBAB_CASE_REGEX, DEFAULT_PM, TEMPLATES_DIR } from '../constants.js'
+import { templates } from '../templates/templates.js'
+import { KEBAB_CASE_REGEX, DEFAULT_PM } from '../constants.js'
 import type { CreateOptions, PartialCreateOptions, PackageManager } from '../constants.js'
 
 export async function promptCreateOptions(
@@ -50,17 +50,15 @@ export async function promptCreateOptions(
   }
 
   if (!template) {
-    const templates = await discoverTemplates(TEMPLATES_DIR)
-
     if (templates.length === 1) {
-      template = templates[0].name
+      template = templates[0].value
     } else if (templates.length > 1) {
       const answers = await inquirer.prompt<{ template: string }>([
         {
           type: 'select',
           name: 'template',
           message: '选择模板:',
-          choices: templates.map((t) => ({ name: t.name, value: t.name })),
+          choices: templates.map((t) => ({ name: t.name, value: t.value })),
         },
       ])
       template = answers.template
