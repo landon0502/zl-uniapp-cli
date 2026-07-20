@@ -4,16 +4,14 @@ import os from 'node:os'
 import type { Command } from 'commander'
 import inquirer from 'inquirer'
 import { promptCreateOptions } from '../prompts/create.js'
-import { copyTemplate, replaceProjectName } from '@zl-uniapp-cli/shared'
-import { TEMPLATES_DIR } from '../constants.js'
+import { replaceProjectName } from '@zl-uniapp-cli/shared'
+import { downloadTemplate } from '../utils/download.js'
 import type { CreateOptions, PartialCreateOptions } from '../constants.js'
 
 export async function executeCreate(
   options: CreateOptions,
   targetDir: string,
 ): Promise<void> {
-  const templateDir = path.join(TEMPLATES_DIR, options.template)
-
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), '.create-app-'))
 
   let cleanedUp = false
@@ -27,7 +25,7 @@ export async function executeCreate(
   process.on('SIGINT', cleanup)
 
   try {
-    await copyTemplate(templateDir, tempDir)
+    await downloadTemplate(options.template, tempDir)
     await replaceProjectName(tempDir, options.name)
 
     try {
