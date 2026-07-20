@@ -26,7 +26,7 @@ describe('downloadTemplate', () => {
 
     await downloadTemplate('uni-vue3', '/tmp/test-dest')
 
-    expect(degit).toHaveBeenCalledWith('zl-uniapp-cli/templates/uni-vue3', {
+    expect(degit).toHaveBeenCalledWith('landon0502/zl-uniapp-cli/templates/uni-vue3', {
       cache: false,
       force: true,
     })
