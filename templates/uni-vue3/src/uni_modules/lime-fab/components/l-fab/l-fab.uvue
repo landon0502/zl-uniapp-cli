@@ -1,0 +1,262 @@
+<template>
+	<view class="l-fab" ref="rootRef" :style="[rootStyle]" 
+		@touchstart="onTouchstart" 
+		@touchmove.stop="onTouchmove"
+		@touchend="onTouchend">
+		<slot></slot>
+	</view>
+</template>
+<script setup lang="uts">
+	/**
+	 * Fab 悬浮按钮组件
+	 * @description 用于创建可拖拽的浮动操作按钮
+	 * <br> 插件类型：LFabComponentPublicInstance 
+	 * @tutorial https://ext.dcloud.net.cn/plugin?name=lime-fab
+	 * 
+	 * @property {number[]} offset 初始偏移坐标 [x, y]（支持px/rpx单位）
+	 * @property {any|string|number} gap 按钮与屏幕边缘的安全间距
+	 * @property {any|string|number|Array} size 按钮尺寸
+	 * @property {LFabAxis} axis 拖拽方向限制
+	 * @value x 仅水平拖拽
+	 * @value y 仅垂直拖拽
+	 * @value xy 自由拖拽
+	 * @value lock 固定位置（不可拖拽）
+	 * @property {string} [icon] 按钮图标（支持字体图标/图片路径）
+	 * @property {LFabMagnetic} [magnetic] 磁吸方向
+	 * @value x 水平磁吸
+	 * @value y 垂直磁吸
+	 * @property {string} [bgColor] 按钮背景色（支持渐变色）
+	 * @event {Function} offsetChange 拖拽导致位置改变后触发
+	 * @event {Function} customClick 点击触发
+	 */
+	import type { LFabBoundary } from './type'
+	import { unitConvert } from '@/uni_modules/lime-shared/unitConvert'
+	import { addUnit } from '@/uni_modules/lime-shared/addUnit'
+	import { useTouch } from './useTouch'
+	import { closest } from '@/uni_modules/lime-shared/closest'
+	import { FabProps, LFabOffset } from './type'
+	// defineOptions({
+	// 	name: 'l-fab'
+	// })
+	// #ifdef APP
+	const emit = defineEmits(['update:offset', 'offsetChange', 'customClick'])
+	// #endif
+	// #ifndef APP
+	const emit = defineEmits(['update:offset', 'offsetChange', 'customClick'])
+	// #endif
+	const props = withDefaults(defineProps<FabProps>(), {
+		offset: [-1, -1],
+		gap: 24,
+		axis: 'y',
+	})
+	const instance = getCurrentInstance()!.proxy!
+	const touch = useTouch();
+	const rootRef = ref<UniElement | null>(null)
+	const _x = ref(1000)
+	const _y = ref(0)
+	const width = ref(0)
+	const height = ref(0)
+	const info = uni.getWindowInfo()
+	const windowWidth = ref(info.windowWidth)
+	const windowHeight = ref(info.windowHeight)
+
+	const show = ref(true)
+	let dragging = false
+	let initialized = ref(false)
+	let prevX = 0;
+	let prevY = 0;
+
+	const _gap = computed(() : number => {
+		return unitConvert(props.gap)
+	})
+	const boundary = computed(() : LFabBoundary => {
+		return {
+			top: _gap.value,
+			right: windowWidth.value - width.value - _gap.value,
+			bottom: windowHeight.value - height.value - _gap.value,
+			left: _gap.value,
+		} as LFabBoundary
+	})
+	const rootStyle = computed(() : Map<string, any> => {
+		const style = new Map<string, any>()
+		// #ifndef APP
+		style.set('transform', `translate(${_x.value}px,${_y.value}px)`)
+		if (dragging || !initialized.value) {
+			style.set('transition-duration', '0ms');
+		} else {
+			style.set('transition-duration', '300ms');
+		}
+		// #endif
+		if (props.bgColor != null) {
+			style.set('background-color', props.bgColor!);
+		}
+		return style
+	})
+
+	const updateState = () => {
+		if (!show.value || rootRef.value == null) return
+		
+		const [x, y] = props.offset
+		// #ifdef APP-ANDROID || APP-IOS || WEB || APP-HARMONY
+		rootRef.value!.getBoundingClientRectAsync()?.then(rect => {
+
+			_x.value = x > -1 ? x : windowWidth.value - rect.width - _gap.value
+			_y.value = y > -1 ? y : windowHeight.value - rect.height - _gap.value
+			initialized.value = true
+			width.value = rect.width
+			height.value = rect.height
+		})
+
+		// #endif
+		// #ifndef APP-ANDROID || APP-IOS || WEB || APP-HARMONY
+		uni.createSelectorQuery().in(instance).select('.l-fab').boundingClientRect((rect) => {
+			_x.value = x > -1 ? x : windowWidth.value - rect.width - _gap.value
+			_y.value = y > -1 ? y : windowHeight.value - rect.height - _gap.value
+
+			width.value = rect.width
+			height.value = rect.height
+		}).exec()
+		// #endif
+	}
+	
+	const onTouchstart = (e : UniTouchEvent) => {
+		touch.start(e);
+		dragging = true;
+		prevX = _x.value;
+		prevY = _y.value;
+	}
+	const onTouchmove = (e : UniTouchEvent) => {
+		
+		touch.move(e);
+		if(touch.deltaX.value > 10 || touch.deltaY.value > 10) {
+			e.preventDefault();
+		}
+		
+		if (!'xy'.includes(props.axis)) return
+		if (!touch.isTap.value) {
+			if (props.axis == 'x' || props.axis == 'xy') {
+				let nextX = prevX + touch.deltaX.value;
+				if (nextX < boundary.value.left) nextX = boundary.value.left;
+				if (nextX > boundary.value.right) nextX = boundary.value.right;
+				_x.value = nextX;
+			}
+
+			if (props.axis == 'y' || props.axis == 'xy') {
+				let nextY = prevY + touch.deltaY.value;
+				if (nextY < boundary.value.top) nextY = boundary.value.top;
+				if (nextY > boundary.value.bottom) nextY = boundary.value.bottom;
+				_y.value = nextY;
+			}
+			emit('update:offset', [_x.value, _y.value]);
+		}
+	}
+	const onTouchend = (e : UniTouchEvent) => {
+		dragging = false;
+		
+		// if(Date.now() - time < 300) {
+		// 	// 有的机型click跟touch事件冲突，导致click事件不灵敏。
+		// 	emit('customClick', e)
+		// 	// #ifdef APP
+		// 	emit('click', e)
+		// 	// #endif
+		// }
+		nextTick(() => {
+			if (props.magnetic == 'x') {
+				const nextX = closest(
+					[boundary.value.left, boundary.value.right],
+					_x.value,
+				);
+				_x.value = nextX;
+			}
+			if (props.magnetic == 'y') {
+				const nextY = closest(
+					[boundary.value.top, boundary.value.bottom],
+					_y.value,
+				);
+				_y.value = nextY;
+			}
+
+			if (!touch.isTap.value) {
+				const offset = [_x.value, _y.value];
+				emit('update:offset', offset);
+				if (prevX != offset[0] || prevY != offset[1]) {
+					emit('offsetChange', offset);
+				}
+			}
+		})
+	}
+
+	// #ifdef APP
+	watchEffect(() => {
+		if (dragging || !initialized.value) {
+			rootRef.value?.style.setProperty('transition-duration', '0ms');
+		} else {
+			rootRef.value?.style.setProperty('transition-duration', '300ms');
+		}
+		rootRef.value?.style.setProperty('transform', `translate(${_x.value}px,${_y.value}px)`)
+	})
+	// #endif
+
+	watch(() : any[] => [props.gap, props.offset], (_ : any) => {
+		updateState()
+	})
+
+	
+	
+	// #ifdef APP || WEB
+	let timer = 0
+	const getBoundingClientRect = ()=>{
+		clearTimeout(timer)
+		timer = setTimeout(()=>{
+			rootRef.value?.getBoundingClientRectAsync()?.then(res => {
+				width.value = res.width
+				height.value = res.height
+				updateState()
+				setTimeout(() => {
+					initialized.value = true;
+				},50)
+			})
+		},50)
+	}
+	const resizeObserver = new UniResizeObserver((entries : Array<UniResizeObserverEntry>) => {
+		if(initialized.value) return
+		getBoundingClientRect()
+	}) 
+	
+	const stopWatch = watch(():UniElement|null => rootRef.value, (el:UniElement|null) => {
+		if(el== null) return
+		resizeObserver.observe(el)
+	})
+	
+	onBeforeUnmount(()=>{
+		stopWatch()
+		resizeObserver.disconnect()
+	})
+	// #endif
+	
+
+	onMounted(() => {
+		nextTick(() => {
+			const info = uni.getWindowInfo()
+			windowWidth.value = info.windowWidth
+			windowHeight.value = info.windowHeight
+			// #ifdef APP-IOS
+			requestAnimationFrame(getBoundingClientRect)
+			// #endif
+			// #ifndef APP-ANDROID || APP-IOS || WEB || APP-HARMONY
+			uni.createSelectorQuery().in(instance).select('.l-fab').boundingClientRect((res) => {
+				width.value = res.width
+				height.value = res.height
+				updateState()
+				setTimeout(() => {
+					initialized.value = true;
+				},50)
+			}).exec()
+			// #endif
+
+		})
+	})
+</script>
+<style lang="scss">
+	@import './index-u.scss';
+</style>

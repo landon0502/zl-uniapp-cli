@@ -4,7 +4,7 @@
 .vscode
 node_modules
 dist
-templates/
+templates/uni-vue3/node_modules
 bin
 !packages/create-zluni-app/bin
 CLAUDE.md

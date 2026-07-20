@@ -1,0 +1,8 @@
+import * as pinyinPro from 'pinyin-pro'
+
+export function chineseToPinyin(text : string) {
+	const options = {
+		toneType: 'none'
+	} 
+	return pinyinPro.pinyin(text, options as any);
+}
