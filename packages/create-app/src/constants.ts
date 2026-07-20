@@ -1,6 +1,3 @@
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
-
 export type PackageManager = 'pnpm' | 'npm' | 'yarn'
 
 export interface CreateOptions {
@@ -14,10 +11,6 @@ export interface PartialCreateOptions {
   template?: string
   pm?: PackageManager
 }
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
-
-export const TEMPLATES_DIR = path.resolve(__dirname, '../../templates')
 
 export const DEFAULT_PM: PackageManager = 'pnpm'
 
