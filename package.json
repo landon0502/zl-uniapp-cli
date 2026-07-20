@@ -4,7 +4,7 @@
   "packageManager": "pnpm@9.15.9",
   "scripts": {
     "build": "pnpm -r build",
-    "dev": "pnpm --filter create-app dev",
+    "dev": "pnpm --filter create-zluni-app dev",
     "test": "pnpm -r test"
   }
 }
