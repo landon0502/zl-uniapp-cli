@@ -1,7 +1,7 @@
 import degit from 'degit'
 import fs from 'node:fs'
 
-const TEMPLATE_REPO = 'zl-uniapp-cli/templates'
+const TEMPLATE_REPO = 'landon0502/zl-uniapp-cli/templates'
 
 export async function downloadTemplate(
   template: string,
