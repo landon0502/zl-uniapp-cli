@@ -1,6 +1,6 @@
 import { isRegExp, isString } from 'lodash'
 import whiteList from './whiteList'
-import Router from '@/utils/Router'
+import { Router } from '@/uni_modules/w-router'
 import { isLogin } from '@/auth/user'
 const router = new Router()
 

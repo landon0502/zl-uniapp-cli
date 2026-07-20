@@ -1,4 +1,0 @@
-export function chineseToPinyin(text: string): string {
-	const transliterator = android.icu.text.Transliterator.getInstance("Han-Latin; Latin-ASCII")
-	return transliterator.transliterate(text)
-}

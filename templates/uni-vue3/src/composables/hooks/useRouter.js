@@ -1,9 +1,9 @@
 import router from '@/router'
-import { onRouteParamsEventKey, onRouteDataEventKey } from '@/utils/Router'
+import { onRouteParamsEventKey } from '@/uni_modules/w-router'
 import { getHistoryPage, pages } from '@/uni_modules/uv-ui-tools/libs/function'
 import { onLoad } from '@dcloudio/uni-app'
 import { noop } from 'lodash'
-import { computed, ref, unref } from 'vue'
+import { computed, ref } from 'vue'
 import useMountedInvoke from './useMountedInvoke'
 import { isTabBarPath } from '@/utils/is'
 
@@ -27,11 +27,6 @@ import { isTabBarPath } from '@/utils/is'
  * // 监听路由参数事件
  * onRouteParams((params) => {
  *   console.log('路由参数:', params)
- * })
- *
- * // 监听路由数据事件
- * onRouteData((data) => {
- *   console.log('路由数据:', data)
  * })
  *
  * // 使用路由实例
@@ -74,36 +69,6 @@ export default function () {
 		})
 	}
 
-	/**
-	 * 监听路由数据事件
-	 * @param {Function} [callback=noop] - 回调函数
-	 */
-	const onRouteData = (callback = noop) => {
-		mountedInvoke(() => {
-			const channal = getHistoryPage().getOpenerEventChannel()
-			// 在微信小程序中 tabbar页面无法使用 channal，在tabbar页面时同一使用uni event事件处理
-			if (isTabBarPath(getHistoryPage().route)) {
-				uni.$on(
-					router.getUniEventNameByRouterUrl(onRouteDataEventKey, currentPage.value.route),
-					(data) => {
-						routerData.value = data
-						callback(data)
-					}
-				)
-			} else {
-				channal.on(onRouteDataEventKey, (data) => {
-					routerData.value = data
-					callback(data)
-				})
-			}
-
-			// 如果已有路由数据，立即执行回调
-			if (routerData.value) {
-				callback(unref(routerData))
-			}
-		})
-	}
-
 	// 页面加载时获取路由参数
 	onLoad((options) => {
 		params.value = options
@@ -117,7 +82,6 @@ export default function () {
 		current,
 		params,
 		data: routerData,
-		onRouteParams,
-		onRouteData
+		onRouteParams
 	}
 }

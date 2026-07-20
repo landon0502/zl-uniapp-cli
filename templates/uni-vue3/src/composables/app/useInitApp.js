@@ -72,14 +72,6 @@ export default function useInitApp() {
 		})
 	})
 
-	// // 页面加载时触发
-	// onLoad(() => {
-	// 	initUser()
-	// 	useProgramUpdate({
-	// 		immutable: true
-	// 	})
-	// })
-
 	// #ifdef H5
 	// H5 平台应用启动时触发
 	onLaunch(() => {
