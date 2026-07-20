@@ -1,10 +1,9 @@
 import fs from 'node:fs'
 import path from 'node:path'
-import { TEMPLATES_DIR } from '../constants.js'
-import type { TemplateInfo } from '../constants.js'
+import type { TemplateInfo } from './constants.js'
 
 export async function discoverTemplates(
-  templatesDir: string = TEMPLATES_DIR,
+  templatesDir: string,
 ): Promise<TemplateInfo[]> {
   const entries = await fs.promises.readdir(templatesDir, {
     withFileTypes: true,

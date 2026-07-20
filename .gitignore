@@ -6,3 +6,4 @@ node_modules
 dist
 templates/uni-vue3/node_modules
 bin
+!packages/create-app/bin

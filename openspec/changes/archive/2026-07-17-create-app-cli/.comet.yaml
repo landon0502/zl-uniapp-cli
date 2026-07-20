@@ -18,8 +18,8 @@ verification_report: docs/superpowers/reports/2026-07-16-create-app-cli-verify.m
 branch_status: handled
 created_at: 2026-07-16
 verified_at: 2026-07-16
-archive_confirmation: pending
-archived: false
+archive_confirmation: confirmed
+archived: true
 direct_override: null
 handoff_context: openspec/changes/create-app-cli/.comet/handoff/design-context.json
 handoff_hash: b57f2e412493aa7951a662e31984d0e8cabe75609590601afd0f29a947f0614e

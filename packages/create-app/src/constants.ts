@@ -15,23 +15,9 @@ export interface PartialCreateOptions {
   pm?: PackageManager
 }
 
-export interface TemplateInfo {
-  name: string
-  path: string
-}
-
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-export const PKG_ROOT = path.resolve(__dirname, '../')
-
-export const TEMPLATES_DIR = path.join(PKG_ROOT, 'templates')
-
-export const COPY_IGNORE_PATTERNS = [
-  '.svn',
-  'node_modules',
-  '.DS_Store',
-  'package-lock.json',
-] as const
+export const TEMPLATES_DIR = path.resolve(__dirname, '../../templates')
 
 export const DEFAULT_PM: PackageManager = 'pnpm'
 

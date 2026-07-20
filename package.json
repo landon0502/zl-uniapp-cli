@@ -1,34 +1,10 @@
 {
   "name": "zl-uniapp-cli",
-  "version": "1.0.0",
-  "type": "module",
-  "main": "dist/index.js",
-  "bin": {
-    "create-zl-app": "./bin/index.js"
-  },
+  "private": true,
+  "packageManager": "pnpm@9.15.9",
   "scripts": {
-    "build": "tsup src/index.ts --format esm",
-    "dev": "tsx src/index.ts",
-    "test": "vitest run"
-  },
-  "engines": {
-    "node": ">=18"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "dependencies": {
-    "commander": "^14.0.3",
-    "fs-extra": "^11.3.6",
-    "inquirer": "^14.0.2"
-  },
-  "devDependencies": {
-    "@types/fs-extra": "^11.0.0",
-    "@types/node": "^22.0.0",
-    "tsup": "^8.0.0",
-    "tsx": "^4.0.0",
-    "typescript": "^5.8.0",
-    "vitest": "^3.0.0"
+    "build": "pnpm -r build",
+    "dev": "pnpm --filter create-app dev",
+    "test": "pnpm -r test"
   }
 }

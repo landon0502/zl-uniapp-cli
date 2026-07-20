@@ -1,6 +1,6 @@
 import inquirer from 'inquirer'
-import { KEBAB_CASE_REGEX, DEFAULT_PM } from '../constants.js'
-import { discoverTemplates } from '../core/template.js'
+import { discoverTemplates } from '@zl-uniapp-cli/shared'
+import { KEBAB_CASE_REGEX, DEFAULT_PM, TEMPLATES_DIR } from '../constants.js'
 import type { CreateOptions, PartialCreateOptions, PackageManager } from '../constants.js'
 
 export async function promptCreateOptions(
@@ -10,7 +10,6 @@ export async function promptCreateOptions(
   let template = partial.template
   let pm = partial.pm
 
-  // Step 1: 交互补充项目名
   if (!name) {
     const answers = await inquirer.prompt<{ name: string }>([
       {
@@ -28,7 +27,6 @@ export async function promptCreateOptions(
     ])
     name = answers.name
   } else if (!KEBAB_CASE_REGEX.test(name)) {
-    // 命令行传入的名称不合法，重新输入
     const answers = await inquirer.prompt<{ name: string }>([
       {
         type: 'input',
@@ -51,9 +49,8 @@ export async function promptCreateOptions(
     name = answers.name
   }
 
-  // Step 2: 交互补充模板选择
   if (!template) {
-    const templates = await discoverTemplates()
+    const templates = await discoverTemplates(TEMPLATES_DIR)
 
     if (templates.length === 1) {
       template = templates[0].name
@@ -72,7 +69,6 @@ export async function promptCreateOptions(
     }
   }
 
-  // Step 3: 交互补充包管理器
   if (!pm) {
     const answers = await inquirer.prompt<{ pm: PackageManager }>([
       {
