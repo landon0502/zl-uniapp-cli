@@ -12,7 +12,7 @@
 ### Requirement: 根 package.json 配置
 
 项目根目录 SHALL 包含 `package.json`，配置如下：
-- `name`: `wh-templates`
+- `name`: `zl-uniapp-cli`
 - `private`: `true`
 - `packageManager`: `pnpm@10`
 - `scripts.build`: `pnpm -r build`
@@ -41,13 +41,13 @@
 ### Requirement: shared 包结构
 
 `packages/shared` SHALL 是一个独立的 npm 包，包含：
-- `package.json`：name 为 `@wh-templates/shared`
+- `package.json`：name 为 `@zl-uniapp-cli/shared`
 - `src/`：共享工具源码（copier、replacer、template、logger）
 - `tsconfig.json`：TypeScript 配置
 - 导出所有工具函数
 
 #### Scenario: shared 包可被 create-app 引用
-- **WHEN** `create-app` 包中 `import { copyTemplate } from '@wh-templates/shared'`
+- **WHEN** `create-app` 包中 `import { copyTemplate } from '@zl-uniapp-cli/shared'`
 - **THEN** 编译和运行时均能正确解析到 `shared` 包的导出
 
 ### Requirement: 模板目录不纳入 workspace

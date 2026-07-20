@@ -8,9 +8,9 @@ base-ref: 7e264bd4fa75c5f76d9d994731be0a64613423b7
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** 将 `zl-uniapp-cli` 单包项目重构为 pnpm Monorepo `wh-templates`，CLI 重命名为 `create-app`，模板与 CLI 解耦，共享工具抽取为 `@wh-templates/shared` 包。
+**Goal:** 将 `zl-uniapp-cli` 单包项目重构为 pnpm Monorepo `zl-uniapp-cli`，CLI 重命名为 `create-app`，模板与 CLI 解耦，共享工具抽取为 `@zl-uniapp-cli/shared` 包。
 
-**Architecture:** pnpm workspace 管理 2 个 packages（create-app + shared），模板目录独立于 workspace。CLI 通过 `@wh-templates/shared` 引用共享工具（copier、replacer、template、logger），新增模板配置中心（templates.ts）和依赖安装功能（execa）。
+**Architecture:** pnpm workspace 管理 2 个 packages（create-app + shared），模板目录独立于 workspace。CLI 通过 `@zl-uniapp-cli/shared` 引用共享工具（copier、replacer、template、logger），新增模板配置中心（templates.ts）和依赖安装功能（execa）。
 
 **Tech Stack:** TypeScript (ESM only), Commander v14, Inquirer v14, fs-extra v11, execa v9, tsup (构建), tsx (开发), vitest (测试), pnpm workspace, Node.js >= 18
 
@@ -43,7 +43,7 @@ packages:
 - [ ] 将现有 `package.json` 替换为 Monorepo 根配置：
 ```json
 {
-  "name": "wh-templates",
+  "name": "zl-uniapp-cli",
   "private": true,
   "packageManager": "pnpm@10",
   "scripts": {
@@ -71,7 +71,7 @@ packages:
   },
   "engines": { "node": ">=18" },
   "dependencies": {
-    "@wh-templates/shared": "workspace:*",
+    "@zl-uniapp-cli/shared": "workspace:*",
     "commander": "^14.0.3",
     "inquirer": "^14.0.2",
     "execa": "^9.0.0"
@@ -91,7 +91,7 @@ packages:
 - [ ] 创建 `packages/shared/package.json`：
 ```json
 {
-  "name": "@wh-templates/shared",
+  "name": "@zl-uniapp-cli/shared",
   "version": "1.0.0",
   "type": "module",
   "main": "dist/index.js",
@@ -122,7 +122,7 @@ packages:
 ### Step 1.6: 安装依赖验证 workspace
 
 - [ ] 删除根目录 `node_modules/`、`package-lock.json`
-- [ ] 运行 `pnpm install`，验证 workspace 链接正确（`ls node_modules/@wh-templates/shared` 应指向 `packages/shared`）
+- [ ] 运行 `pnpm install`，验证 workspace 链接正确（`ls node_modules/@zl-uniapp-cli/shared` 应指向 `packages/shared`）
 
 ---
 
@@ -160,7 +160,7 @@ packages:
 
 ### Step 2.8: 验证 shared 构建
 
-- [ ] 运行 `pnpm --filter @wh-templates/shared build`，确认构建成功
+- [ ] 运行 `pnpm --filter @zl-uniapp-cli/shared build`，确认构建成功
 
 ---
 
@@ -179,12 +179,12 @@ packages:
 ### Step 3.3: 迁移 commands/create.ts
 
 - [ ] 将 `src/commands/create.ts` 复制到 `packages/create-app/src/commands/create.ts`
-- [ ] 更新 import：core 模块 → `@wh-templates/shared`
+- [ ] 更新 import：core 模块 → `@zl-uniapp-cli/shared`
 
 ### Step 3.4: 迁移 prompts/create.ts
 
 - [ ] 将 `src/prompts/create.ts` 复制到 `packages/create-app/src/prompts/create.ts`
-- [ ] 更新 import：core/template → `@wh-templates/shared`
+- [ ] 更新 import：core/template → `@zl-uniapp-cli/shared`
 
 ### Step 3.5: 新增模板配置中心
 

@@ -8,14 +8,14 @@ canonical_spec: openspec
 
 ## 1. 概述
 
-将 `zl-uniapp-cli` 单包项目重构为 pnpm Monorepo 架构 `wh-templates`，CLI 重命名为 `create-app`，模板与 CLI 解耦，共享工具抽取为 `@wh-templates/shared` 包。
+将 `zl-uniapp-cli` 单包项目重构为 pnpm Monorepo 架构 `zl-uniapp-cli`，CLI 重命名为 `create-app`，模板与 CLI 解耦，共享工具抽取为 `@zl-uniapp-cli/shared` 包。
 
 采用渐进式迁移策略：骨架 → shared → CLI → 模板 → 测试 → 清理，每步可独立验证。
 
 ## 2. 目录结构
 
 ```
-wh-templates/
+zl-uniapp-cli/
 ├── packages/
 │   ├── create-app/                 # CLI 包
 │   │   ├── bin/
@@ -62,7 +62,7 @@ wh-templates/
 
 ```json
 {
-  "name": "wh-templates",
+  "name": "zl-uniapp-cli",
   "private": true,
   "packageManager": "pnpm@10",
   "scripts": {
@@ -95,7 +95,7 @@ packages:
     "test": "vitest run"
   },
   "dependencies": {
-    "@wh-templates/shared": "workspace:*",
+    "@zl-uniapp-cli/shared": "workspace:*",
     "commander": "^14.0.3",
     "inquirer": "^14.0.2",
     "execa": "^9.0.0"
@@ -110,11 +110,11 @@ packages:
 }
 ```
 
-### 3.4 @wh-templates/shared/package.json
+### 3.4 @zl-uniapp-cli/shared/package.json
 
 ```json
 {
-  "name": "@wh-templates/shared",
+  "name": "@zl-uniapp-cli/shared",
   "version": "1.0.0",
   "type": "module",
   "main": "dist/index.js",
@@ -237,7 +237,7 @@ export { logger } from './logger.js'
 export type { TemplateInfo } from './template.js'
 ```
 
-CLI 通过 `import { copyTemplate, replaceProjectName } from '@wh-templates/shared'` 引用。
+CLI 通过 `import { copyTemplate, replaceProjectName } from '@zl-uniapp-cli/shared'` 引用。
 
 ## 5. 迁移步骤
 
@@ -315,7 +315,7 @@ CLI 通过 `import { copyTemplate, replaceProjectName } from '@wh-templates/shar
 
 ### 测试迁移要点
 
-- import 路径从 `../core/xxx.js` 改为 `@wh-templates/shared`
+- import 路径从 `../core/xxx.js` 改为 `@zl-uniapp-cli/shared`
 - 测试中的模板路径 fixture 需适配新目录结构
 - vitest 配置每个包独立，resolve alias 处理 workspace 引用
 

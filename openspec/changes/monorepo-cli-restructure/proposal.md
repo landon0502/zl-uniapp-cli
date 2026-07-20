@@ -12,7 +12,7 @@
 ## What Changes
 
 - **BREAKING**: CLI 命令从 `create-app` / `create-zl-app` 重命名为 `create-app`
-- **BREAKING**: 项目从单包 `zl-uniapp-cli` 重构为 pnpm Monorepo（`wh-templates`）
+- **BREAKING**: 项目从单包 `zl-uniapp-cli` 重构为 pnpm Monorepo（`zl-uniapp-cli`）
 - 新增 `packages/create-app` — 脚手架 CLI 包
 - 新增 `packages/shared` — 公共工具包（模板复制、项目名替换、模板发现等）
 - 模板目录从 `templates/` 顶层保留，`uni-vue3` 迁移为 `uniapp-base`

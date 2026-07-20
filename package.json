@@ -1,5 +1,5 @@
 {
-  "name": "wh-templates",
+  "name": "zl-uniapp-cli",
   "private": true,
   "packageManager": "pnpm@9.15.9",
   "scripts": {

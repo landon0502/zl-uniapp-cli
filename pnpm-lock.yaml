@@ -10,7 +10,7 @@ importers:
 
   packages/create-app:
     dependencies:
-      '@wh-templates/shared':
+      '@zl-uniapp-cli/shared':
         specifier: workspace:*
         version: link:../shared
       commander:

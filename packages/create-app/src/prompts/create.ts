@@ -1,5 +1,5 @@
 import inquirer from 'inquirer'
-import { discoverTemplates } from '@wh-templates/shared'
+import { discoverTemplates } from '@zl-uniapp-cli/shared'
 import { KEBAB_CASE_REGEX, DEFAULT_PM, TEMPLATES_DIR } from '../constants.js'
 import type { CreateOptions, PartialCreateOptions, PackageManager } from '../constants.js'
 

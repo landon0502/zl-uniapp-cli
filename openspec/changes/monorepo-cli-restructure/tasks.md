@@ -1,9 +1,9 @@
 ## 1. Monorepo 骨架搭建
 
 - [ ] 1.1 创建 `pnpm-workspace.yaml`，声明 `packages/*` 为 workspace 成员
-- [ ] 1.2 创建根 `package.json`（name: wh-templates, private: true, packageManager: pnpm@10, scripts: build/dev）
+- [ ] 1.2 创建根 `package.json`（name: zl-uniapp-cli, private: true, packageManager: pnpm@10, scripts: build/dev）
 - [ ] 1.3 创建 `packages/create-app/package.json`（name: create-app, bin, 依赖 shared + commander + inquirer + execa）
-- [ ] 1.4 创建 `packages/shared/package.json`（name: @wh-templates/shared, 导出配置）
+- [ ] 1.4 创建 `packages/shared/package.json`（name: @zl-uniapp-cli/shared, 导出配置）
 - [ ] 1.5 为两个包分别创建 `tsconfig.json`（继承根配置或独立配置）
 - [ ] 1.6 运行 `pnpm install` 验证 workspace 链接正确
 
@@ -15,7 +15,7 @@
 - [ ] 2.4 迁移 `src/core/template.ts` → `packages/shared/src/template.ts`，更新 import 路径
 - [ ] 2.5 新增 `packages/shared/src/logger.ts`（日志工具）
 - [ ] 2.6 创建 `packages/shared/src/index.ts` 统一导出所有工具
-- [ ] 2.7 配置 shared 包构建（tsup），验证 `pnpm --filter @wh-templates/shared build` 通过
+- [ ] 2.7 配置 shared 包构建（tsup），验证 `pnpm --filter @zl-uniapp-cli/shared build` 通过
 
 ## 3. create-app 包迁移
 

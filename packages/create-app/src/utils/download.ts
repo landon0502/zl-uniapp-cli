@@ -1,5 +1,5 @@
 import path from 'node:path'
-import { copyTemplate } from '@wh-templates/shared'
+import { copyTemplate } from '@zl-uniapp-cli/shared'
 import { TEMPLATES_DIR } from '../constants.js'
 
 export async function downloadTemplate(

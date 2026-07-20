@@ -55,7 +55,7 @@ w-uni-cli/
 **选择**: 2 个 packages + 独立 templates 目录
 
 ```
-wh-templates/
+zl-uniapp-cli/
 ├── packages/
 │   ├── create-app/    # CLI 包（commander + inquirer）
 │   └── shared/           # 共享工具（copier + replacer + template + logger）
@@ -114,11 +114,11 @@ wh-templates/
 
 ### D6: 项目命名
 
-**选择**: 仓库名 `wh-templates`，CLI 包名 `create-app`
+**选择**: 仓库名 `zl-uniapp-cli`，CLI 包名 `create-app`
 
 **理由**:
 - `create-*` 是 Node.js 脚手架的命名惯例（create-react-app、create-vite）
-- `wh-templates` 体现仓库定位（模板中心），不局限于 CLI
+- `zl-uniapp-cli` 体现仓库定位（UniApp CLI 工具集），不局限于模板
 
 ## Risks / Trade-offs
 
