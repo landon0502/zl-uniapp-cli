@@ -7,3 +7,8 @@ dist
 templates/uni-vue3/node_modules
 bin
 !packages/create-app/bin
+CLAUDE.md
+AGENTS.md
+CLAUDE.mdcurl
+skills-lock.json
+openspec

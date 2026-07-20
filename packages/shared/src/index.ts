@@ -1,5 +1,6 @@
 export { copyTemplate, createCopyFilter } from './copier.js'
 export { replaceProjectName } from './replacer.js'
+/** @deprecated 模板发现改为静态注册表驱动，此函数不再被 create-app 使用 */
 export { discoverTemplates } from './template.js'
 export { logger } from './logger.js'
 export { COPY_IGNORE_PATTERNS } from './constants.js'
