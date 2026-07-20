@@ -4,12 +4,13 @@
 .vscode
 node_modules
 dist
-templates/uni-vue3/node_modules
+templates/
 bin
-!packages/create-app/bin
+!packages/create-zluni-app/bin
 CLAUDE.md
 AGENTS.md
 CLAUDE.mdcurl
 skills-lock.json
 openspec
 .DS_Store
+docs

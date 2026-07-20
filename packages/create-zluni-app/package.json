@@ -1,8 +1,8 @@
 {
-  "name": "create-app",
+  "name": "create-zluni-app",
   "version": "1.0.0",
   "type": "module",
-  "bin": { "create-app": "./bin/index.js" },
+  "bin": "./bin/index.js",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsup src/index.ts --format esm",
