@@ -364,32 +364,32 @@ npx @zlskuniapp/zlapp-cli create my-app -t uni-vue3
 
 | 命令 | 说明 |
 |------|------|
-| `pnpm install` | 安装依赖 |
-| `pnpm dev:h5` | H5 开发模式 |
-| `pnpm dev:mp-weixin` | 微信小程序开发模式 |
-| `pnpm build:h5` | H5 生产构建 |
-| `pnpm build:mp-weixin` | 微信小程序生产构建 |
-| `pnpm format` | Prettier 代码格式化 |
-| `pnpm lint` | ESLint 代码检查 |
-| `pnpm lint:fix` | ESLint 自动修复 |
-| `pnpm test` | 运行单元测试 |
-| `pnpm coverage` | 测试覆盖率报告 |
+| `npm install` | 安装依赖 |
+| `npm dev:h5` | H5 开发模式 |
+| `npm dev:mp-weixin` | 微信小程序开发模式 |
+| `npm build:h5` | H5 生产构建 |
+| `npm build:mp-weixin` | 微信小程序生产构建 |
+| `npm format` | Prettier 代码格式化 |
+| `npm lint` | ESLint 代码检查 |
+| `npm lint:fix` | ESLint 自动修复 |
+| `npm test` | 运行单元测试 |
+| `npm coverage` | 测试覆盖率报告 |
 
 #### 全平台命令一览
 
 | 平台 | 开发命令 | 构建命令 |
 |------|---------|---------|
-| H5 | `pnpm dev:h5` | `pnpm build:h5` |
-| 微信小程序 | `pnpm dev:mp-weixin` | `pnpm build:mp-weixin` |
-| 支付宝小程序 | `pnpm dev:mp-alipay` | `pnpm build:mp-alipay` |
-| 百度小程序 | `pnpm dev:mp-baidu` | `pnpm build:mp-baidu` |
-| 京东小程序 | `pnpm dev:mp-jd` | `pnpm build:mp-jd` |
-| 快手小程序 | `pnpm dev:mp-kuaishou` | `pnpm build:mp-kuaishou` |
-| 飞书小程序 | `pnpm dev:mp-lark` | `pnpm build:mp-lark` |
-| QQ 小程序 | `pnpm dev:mp-qq` | `pnpm build:mp-qq` |
-| 头条小程序 | `pnpm dev:mp-toutiao` | `pnpm build:mp-toutiao` |
-| 鸿蒙元服务 | `pnpm dev:mp-harmony` | `pnpm build:mp-harmony` |
-| 小红书小程序 | `pnpm dev:mp-xhs` | `pnpm build:mp-xhs` |
+| H5 | `npm dev:h5` | `npm build:h5` |
+| 微信小程序 | `npm dev:mp-weixin` | `npm build:mp-weixin` |
+| 支付宝小程序 | `npm dev:mp-alipay` | `npm build:mp-alipay` |
+| 百度小程序 | `npm dev:mp-baidu` | `npm build:mp-baidu` |
+| 京东小程序 | `npm dev:mp-jd` | `npm build:mp-jd` |
+| 快手小程序 | `npm dev:mp-kuaishou` | `npm build:mp-kuaishou` |
+| 飞书小程序 | `npm dev:mp-lark` | `npm build:mp-lark` |
+| QQ 小程序 | `npm dev:mp-qq` | `npm build:mp-qq` |
+| 头条小程序 | `npm dev:mp-toutiao` | `npm build:mp-toutiao` |
+| 鸿蒙元服务 | `npm dev:mp-harmony` | `npm build:mp-harmony` |
+| 小红书小程序 | `npm dev:mp-xhs` | `npm build:mp-xhs` |
 
 > **提示**：微信小程序开发时，构建产物在 `dist/dev/mp-weixin` 目录，需在微信开发者工具中导入该目录。
 
@@ -400,8 +400,8 @@ npx @zlskuniapp/zlapp-cli create my-app -t uni-vue3
 | 文件 | 说明 | 何时生效 |
 |------|------|---------|
 | `.env` | 通用环境变量 | 所有环境 |
-| `.env.development` | 开发环境变量 | `pnpm dev:*` 时 |
-| `.env.production` | 生产环境变量 | `pnpm build:*` 时 |
+| `.env.development` | 开发环境变量 | `npm dev:*` 时 |
+| `.env.production` | 生产环境变量 | `npm build:*` 时 |
 
 #### 关键环境变量
 
@@ -796,7 +796,7 @@ const current = getCurrentTheme() // 'blue' | 'green' | 'yellow'
 
 **A:**
 
-1. 运行 `pnpm dev:mp-weixin`
+1. 运行 `npm dev:mp-weixin`
 2. 打开微信开发者工具
 3. 导入项目目录：`dist/dev/mp-weixin`
 4. 在微信开发者工具中进行调试
