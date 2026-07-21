@@ -1,5 +1,6 @@
 import degit from 'degit'
 import fs from 'node:fs'
+import ora from 'ora'
 
 const TEMPLATE_REPO = 'landon0502/zl-uniapp-cli/templates'
 
@@ -7,21 +8,25 @@ export async function downloadTemplate(
   template: string,
   dest: string,
 ): Promise<void> {
+  const spinner = ora(`正在拉取模板 ${template}...`)
+
   const emitter = degit(`${TEMPLATE_REPO}/${template}`, {
     cache: false,
     force: true,
   })
 
   emitter.on('info', (info: { message: string }) => {
-    console.log(`  ⠋ ${info.message}`)
+    spinner.text = info.message
   })
 
-  console.log(`⠋ 正在拉取模板 ${template}...`)
+  spinner.start()
 
   try {
     await emitter.clone(dest)
-    console.log('✔ 模板拉取完成')
+    spinner.succeed('模板拉取完成')
   } catch (err: unknown) {
+    spinner.fail('模板拉取失败')
+
     if (fs.existsSync(dest)) {
       fs.rmSync(dest, { recursive: true, force: true })
     }
@@ -38,7 +43,7 @@ export async function downloadTemplate(
     }
 
     if (err instanceof Error) {
-      throw new Error(`网络连接失败，请检查网络后重试`)
+      throw new Error('网络连接失败，请检查网络后重试')
     }
 
     throw new Error(`模板拉取失败: ${String(err)}`)
