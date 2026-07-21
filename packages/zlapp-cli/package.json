@@ -1,6 +1,6 @@
 {
   "name": "@zlskuniapp/zlapp-cli",
-  "version": "1.0.2",
+  "version": "1.0.0",
   "type": "module",
   "bin": "./bin/index.js",
   "main": "dist/index.js",
