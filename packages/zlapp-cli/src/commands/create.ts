@@ -51,13 +51,11 @@ export function registerCreateCommand(program: Command): void {
     .command('create [name]')
     .description('创建新项目')
     .option('-t, --template <name>', '模板名称')
-    .option('-p, --pm <pm>', '包管理器 (pnpm|npm|yarn)')
     .action(async (name: string | undefined, cmdOptions: Record<string, string | undefined>) => {
       try {
         const partial: PartialCreateOptions = {
           name,
           template: cmdOptions.template,
-          pm: cmdOptions.pm as 'pnpm' | 'npm' | 'yarn' | undefined,
         }
         const options = await promptCreateOptions(partial)
 

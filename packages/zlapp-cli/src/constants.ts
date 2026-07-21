@@ -1,4 +1,4 @@
-export type PackageManager = 'pnpm' | 'npm' | 'yarn'
+export type PackageManager = 'npm'
 
 export interface CreateOptions {
   name: string
@@ -12,6 +12,6 @@ export interface PartialCreateOptions {
   pm?: PackageManager
 }
 
-export const DEFAULT_PM: PackageManager = 'pnpm'
+export const DEFAULT_PM: PackageManager = 'npm'
 
 export const KEBAB_CASE_REGEX = /^[a-z][a-z0-9]*(-[a-z0-9]+)*$/

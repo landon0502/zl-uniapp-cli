@@ -67,18 +67,7 @@ export async function promptCreateOptions(
     }
   }
 
-  if (!pm) {
-    const answers = await inquirer.prompt<{ pm: PackageManager }>([
-      {
-        type: 'select',
-        name: 'pm',
-        message: '选择包管理器:',
-        choices: ['pnpm', 'npm', 'yarn'],
-        default: DEFAULT_PM,
-      },
-    ])
-    pm = answers.pm
-  }
+  pm = partial.pm ?? DEFAULT_PM
 
   return { name, template, pm }
 }
