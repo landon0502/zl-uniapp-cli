@@ -4,7 +4,7 @@ import os from 'node:os'
 import type { Command } from 'commander'
 import inquirer from 'inquirer'
 import { promptCreateOptions } from '../prompts/create.js'
-import { replaceProjectName } from '@zl-uniapp-cli/shared'
+import { replaceProjectName } from '@zlskuniapp/shared'
 import { downloadTemplate } from '../utils/download.js'
 import type { CreateOptions, PartialCreateOptions } from '../constants.js'
 

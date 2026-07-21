@@ -9,7 +9,7 @@ vi.mock('../../src/utils/download.js', () => ({
   downloadTemplate: vi.fn().mockResolvedValue(undefined),
 }))
 
-vi.mock('@zl-uniapp-cli/shared', () => ({
+vi.mock('@zlskuniapp/shared', () => ({
   replaceProjectName: vi.fn().mockResolvedValue(undefined),
 }))
 
@@ -39,7 +39,7 @@ describe('executeCreate', () => {
   })
 
   it('应调用 replaceProjectName 并传递临时目录和项目名', async () => {
-    const { replaceProjectName } = await import('@zl-uniapp-cli/shared')
+    const { replaceProjectName } = await import('@zlskuniapp/shared')
     const targetDir = path.join(os.tmpdir(), 'create-app-test-target')
 
     await executeCreate(defaultOptions, targetDir)
