@@ -27,19 +27,6 @@ export async function promptCreateOptions(
       },
     ])
     name = answers.name
-  } else if(!appname){
-    const answers = await inquirer.prompt<{ name: string }>([
-      {
-        type: 'input',
-        name: 'appname',
-        message: 'app应用名称:',
-        validate: (input: string) => {
-          if (!input.trim()) return 'app应用名称不能为空'
-          return true
-        },
-      },
-    ])
-    name = answers.name
   } else if (!KEBAB_CASE_REGEX.test(name)) {
     const answers = await inquirer.prompt<{ name: string }>([
       {
@@ -63,6 +50,20 @@ export async function promptCreateOptions(
     name = answers.name
   }
 
+  if(!appname){
+    const answers = await inquirer.prompt<{ name: string }>([
+      {
+        type: 'input',
+        name: 'appname',
+        message: 'app应用名称:',
+        validate: (input: string) => {
+          if (!input.trim()) return 'app应用名称不能为空'
+          return true
+        },
+      },
+    ])
+    appname = answers.appname
+  }
   if (!template) {
     if (templates.length === 1) {
       template = templates[0].value

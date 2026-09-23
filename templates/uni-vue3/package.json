@@ -1,6 +1,6 @@
 {
-  "name": "t",
-  "version": "0.0.0",
+  "name": "uni-vue3-template",
+  "version": "1.0.0",
   "scripts": {
     "start": "npm run dev:mp-weixin",
     "dev:custom": "uni -p",

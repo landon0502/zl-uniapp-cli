@@ -3,5 +3,7 @@ export { replaceProjectName, replaceAppName } from './replacer.js'
 /** @deprecated 模板发现改为静态注册表驱动，此函数不再被 create-app 使用 */
 export { discoverTemplates } from './template.js'
 export { logger } from './logger.js'
+export { readJsonValue } from './json.js'
+export { writeFile } from './file.js'
 export { COPY_IGNORE_PATTERNS } from './constants.js'
 export type { TemplateInfo } from './constants.js'

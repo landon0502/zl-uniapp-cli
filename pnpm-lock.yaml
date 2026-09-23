@@ -11,6 +11,18 @@ importers:
       '@changesets/cli':
         specifier: ^3.0.3
         version: 3.0.3
+      '@types/lodash':
+        specifier: ^4.17.25
+        version: 4.17.25
+      json-format:
+        specifier: ^1.0.1
+        version: 1.0.1
+      json5:
+        specifier: ^2.2.3
+        version: 2.2.3
+      lodash:
+        specifier: ^4.18.1
+        version: 4.18.1
 
   packages/shared:
     dependencies:
@@ -37,8 +49,8 @@ importers:
   packages/zlapp-cli:
     dependencies:
       '@zlskuniapp/shared':
-        specifier: 1.0.0
-        version: 1.0.0
+        specifier: ^1.0.4
+        version: 1.0.4
       commander:
         specifier: ^14.0.3
         version: 14.0.3
@@ -764,6 +776,9 @@ packages:
   '@types/jsonfile@6.1.4':
     resolution: {integrity: sha512-D5qGUYwjvnNNextdU59/+fI+spnwtTFmyQP0h+PfIOSkNfpU6AOICUOkm4i0OnSk+NyjdPJrxCDro0sJsWlRpQ==}
 
+  '@types/lodash@4.17.25':
+    resolution: {integrity: sha512-+K1NIO8I+F9/wNulfVvu23QYd0Pe9/OCqRrim4NoYIf1VoEDL90Ve4ClzpyqBLc7NpGGWRvYNCKZ1BE/Jpf8dQ==}
+
   '@types/node@22.20.1':
     resolution: {integrity: sha512-EANqOCF9QFyra+4pfxUcX9STKJpCLjMbObVzljIJomAWSnuSIEAvyzEU53GaajbXJEgdh0iEcPL+DGvpUd4k1Q==}
 
@@ -796,8 +811,8 @@ packages:
   '@vitest/utils@3.2.7':
     resolution: {integrity: sha512-x6BDOd7dyo3PFLY3I9/HJ25X/6OurhGXk2/B9gOZNPF7XDVjeBK4k01lQE5uvDpbuheErh91qYuE1E2OEjK3Rw==}
 
-  '@zlskuniapp/shared@1.0.0':
-    resolution: {integrity: sha512-WZhc2DFkjG/t/aDpy1DSBzIegPgY6tY6hMNDLAUOrSmjnif4FD1yRogSzoFeunIZUV/EU0tS8Ugynu6RT7rh1w==}
+  '@zlskuniapp/shared@1.0.4':
+    resolution: {integrity: sha512-QDQJ938/2twc2OscK0stJBggu5h3WMvYPZqR1jsV9gMXqo09IQ2k7NaLc+hg4yFkeLIwAl5hy8QjdCD/+jYFaQ==}
     engines: {node: '>=18'}
 
   acorn@8.17.0:
@@ -1020,6 +1035,14 @@ packages:
   js-tokens@9.0.1:
     resolution: {integrity: sha512-mxa9E9ITFOt0ban3j6L5MpjwegGz6lBQmM1IJkWeBZGcMxto50+eWdjC/52xDbS2vy0k7vIMK0Fe2wfL9OQSpQ==}
 
+  json-format@1.0.1:
+    resolution: {integrity: sha512-MoKIg/lBeQALqjYnqEanikfo3zBKRwclpXJexdF0FUniYAAN2ypEIXBEtpQb+9BkLFtDK1fyTLAsnGlyGfLGxw==}
+
+  json5@2.2.3:
+    resolution: {integrity: sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg==}
+    engines: {node: '>=6'}
+    hasBin: true
+
   jsonc-parser@3.3.1:
     resolution: {integrity: sha512-HUgH65KyejrUFPvHFPbqOY0rsFip3Bo5wb4ngvdi1EpCYWUQDC5V+Y7mZws+DLkr4M//zQJoanu1SP+87Dv1oQ==}
 
@@ -1039,6 +1062,9 @@ packages:
   load-tsconfig@0.2.5:
     resolution: {integrity: sha512-IXO6OCs9yg8tMKzfPZ1YmheJbZCiEsnBdcB03l0OcfK9prKnJb96siuHCr5Fl37/yo9DnKU+TLpxzTUspw9shg==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+
+  lodash@4.18.1:
+    resolution: {integrity: sha512-dMInicTPVE8d1e5otfwmmjlxkZoUpiVLwyeTdUsi/Caj/gfzzblBcCE5sRHV/AsjuCmxWrte2TNGSYuCeCq+0Q==}
 
   log-symbols@7.0.1:
     resolution: {integrity: sha512-ja1E3yCr9i/0hmBVaM0bfwDjnGy8I/s6PP4DFp+yP+a+mrHO4Rm7DtmnqROTUkHIkqffC84YY7AeqX6oFk0WFg==}
@@ -1939,6 +1965,8 @@ snapshots:
     dependencies:
       '@types/node': 22.20.1
 
+  '@types/lodash@4.17.25': {}
+
   '@types/node@22.20.1':
     dependencies:
       undici-types: 6.21.0
@@ -1985,7 +2013,7 @@ snapshots:
       loupe: 3.2.1
       tinyrainbow: 2.0.0
 
-  '@zlskuniapp/shared@1.0.0':
+  '@zlskuniapp/shared@1.0.4':
     dependencies:
       fs-extra: 11.3.6
 
@@ -2214,6 +2242,10 @@ snapshots:
 
   js-tokens@9.0.1: {}
 
+  json-format@1.0.1: {}
+
+  json5@2.2.3: {}
+
   jsonc-parser@3.3.1: {}
 
   jsonfile@6.2.1:
@@ -2232,6 +2264,8 @@ snapshots:
   lines-and-columns@1.2.4: {}
 
   load-tsconfig@0.2.5: {}
+
+  lodash@4.18.1: {}
 
   log-symbols@7.0.1:
     dependencies:

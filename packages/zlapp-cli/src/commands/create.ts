@@ -51,7 +51,7 @@ export function registerCreateCommand(program: Command): void {
     .command('create [name]')
     .description('创建新项目')
     .option('-t, --template <name>', '模板名称')
-    .option('-p, --appname <appname>', '默认值', 'blue')
+    .option('-p, --appname <appname>', '默认值', '')
     .action(async (name: string | undefined, cmdOptions: Record<string, string | undefined>) => {
       try {
         const partial: PartialCreateOptions = {

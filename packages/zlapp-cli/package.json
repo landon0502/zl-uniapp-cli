@@ -1,6 +1,6 @@
 {
   "name": "@zlskuniapp/zlapp-cli",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "type": "module",
   "bin": "./bin/index.js",
   "main": "dist/index.js",
@@ -17,7 +17,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "@zlskuniapp/shared": "1.0.0",
+    "@zlskuniapp/shared": "^1.0.4",
     "commander": "^14.0.3",
     "degit": "^3.6.0",
     "execa": "^9.0.0",
