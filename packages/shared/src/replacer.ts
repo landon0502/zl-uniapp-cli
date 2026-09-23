@@ -11,3 +11,14 @@ export async function replaceProjectName(
   pkg.name = name
   await fs.promises.writeFile(pkgPath, JSON.stringify(pkg, null, 2) + '\n')
 }
+
+export async function replaceAppName(
+  dir: string,
+  name: string,
+): Promise<void> {
+  const pkgPath = path.join(dir, 'src/manifest.json')
+  const content = await fs.promises.readFile(pkgPath, 'utf-8')
+  const pkg = JSON.parse(content)
+  pkg.name = name
+  await fs.promises.writeFile(pkgPath, JSON.stringify(pkg, null, 2) + '\n')
+}

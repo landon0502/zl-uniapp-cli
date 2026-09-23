@@ -4,12 +4,14 @@ export interface CreateOptions {
   name: string
   template: string
   pm: PackageManager
+  appname: string
 }
 
 export interface PartialCreateOptions {
   name?: string
   template?: string
   pm?: PackageManager
+  appname?: string
 }
 
 export const DEFAULT_PM: PackageManager = 'npm'

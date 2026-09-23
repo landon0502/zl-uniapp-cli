@@ -9,6 +9,7 @@ export async function promptCreateOptions(
   let name = partial.name
   let template = partial.template
   let pm = partial.pm
+  let appname = partial.appname
 
   if (!name) {
     const answers = await inquirer.prompt<{ name: string }>([
@@ -21,6 +22,19 @@ export async function promptCreateOptions(
           if (!KEBAB_CASE_REGEX.test(input)) {
             return '项目名称必须为 kebab-case 格式（如 my-app, uni-vue3）'
           }
+          return true
+        },
+      },
+    ])
+    name = answers.name
+  } else if(!appname){
+    const answers = await inquirer.prompt<{ name: string }>([
+      {
+        type: 'input',
+        name: 'appname',
+        message: 'app应用名称:',
+        validate: (input: string) => {
+          if (!input.trim()) return 'app应用名称不能为空'
           return true
         },
       },
@@ -69,5 +83,5 @@ export async function promptCreateOptions(
 
   pm = partial.pm ?? DEFAULT_PM
 
-  return { name, template, pm }
+  return { name, template, pm, appname }
 }

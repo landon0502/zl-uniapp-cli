@@ -3,7 +3,7 @@ export default {
 		// 留出底部安全区
 		safeAreaInsetBottom: {
 			type: Boolean,
-			default: false
+			default: true
 		},
 		// 定位层级
 		zIndex: {

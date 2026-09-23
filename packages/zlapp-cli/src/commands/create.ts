@@ -4,7 +4,7 @@ import os from 'node:os'
 import type { Command } from 'commander'
 import inquirer from 'inquirer'
 import { promptCreateOptions } from '../prompts/create.js'
-import { replaceProjectName } from '@zlskuniapp/shared'
+import { replaceProjectName, replaceAppName } from '@zlskuniapp/shared'
 import { downloadTemplate } from '../utils/download.js'
 import type { CreateOptions, PartialCreateOptions } from '../constants.js'
 
@@ -27,7 +27,7 @@ export async function executeCreate(
   try {
     await downloadTemplate(options.template, tempDir)
     await replaceProjectName(tempDir, options.name)
-
+    await replaceAppName(tempDir, options.appname)
     try {
       fs.renameSync(tempDir, targetDir)
     } catch (err: unknown) {
@@ -51,11 +51,13 @@ export function registerCreateCommand(program: Command): void {
     .command('create [name]')
     .description('创建新项目')
     .option('-t, --template <name>', '模板名称')
+    .option('-p, --appname <appname>', '默认值', 'blue')
     .action(async (name: string | undefined, cmdOptions: Record<string, string | undefined>) => {
       try {
         const partial: PartialCreateOptions = {
           name,
           template: cmdOptions.template,
+          appname: cmdOptions.appname
         }
         const options = await promptCreateOptions(partial)
 

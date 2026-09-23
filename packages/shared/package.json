@@ -1,9 +1,11 @@
 {
   "name": "@zlskuniapp/shared",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "type": "module",
   "main": "dist/index.js",
-  "exports": { ".": "./dist/index.js" },
+  "exports": {
+    ".": "./dist/index.js"
+  },
   "files": [
     "dist"
   ],
@@ -11,7 +13,9 @@
     "build": "tsup src/index.ts --format esm",
     "test": "vitest run"
   },
-  "engines": { "node": ">=18" },
+  "engines": {
+    "node": ">=18"
+  },
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"

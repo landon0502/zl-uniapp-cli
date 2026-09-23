@@ -8,7 +8,7 @@ import { useNetworkStatus } from '@/composables'
 // #ifndef APP
 import mock from './mock'
 // #endif
-import 'virtual:uno.css'
+import 'uno.css' // 引入 UnoCSS 样式
 
 const { createPinia } = Pinia
 export function createApp() {

@@ -7,5 +7,8 @@
     "dev": "pnpm --filter @zlskuniapp/zlapp-cli dev",
     "test": "pnpm -r test",
     "release": "pnpm run build && changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^3.0.3"
   }
 }

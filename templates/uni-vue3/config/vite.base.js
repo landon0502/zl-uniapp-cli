@@ -26,6 +26,8 @@ export default defineConfig(async ({ mode }) => {
 				// options are passed on to @vitejs/plugin-vue-jsx
 			}),
 			UnoCSS({
+				// 为小程序端启用 per-module 模式，生成组件级样式
+				mode: 'per-module',
 				configFile: path.resolve(__dirname, './uno.config.js')
 			}),
 			eslintPlugin({
