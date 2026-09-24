@@ -1,0 +1,199 @@
+/**
+ * w-router UTS 路由跳转实现（uni-app x / uvue）
+ *
+ * 对应 core/router.core.ts。适配点：
+ * - 输入统一为具名 NavigationOptions（UTS 不支持对 any 做动态成员访问）
+ * - 取消通用 deepMerge/Object.keys（UTS 不支持），改为逐字段默认覆盖 overlay
+ * - RouteConfig 索引签名 → 显式可选字段（UTS 无索引签名）
+ * - mixinParam 的 query 由 UTSJSONObject 序列化生成
+ */
+import { queryParams, page } from './utils'
+import type { NavigationOptions } from './types'
+
+/** 单次导航的内部配置 */
+type RouteConfig = {
+  type: string
+  url: string
+  delta: number
+  params: any
+  animationType: string
+  animationDuration: number
+  intercept: boolean | ((config: RouteConfig, resolve: (value: boolean) => void) => void)
+  events: any
+  success?: (result: any) => void
+  fail?: (error: any) => void
+  complete?: (result: any) => void
+}
+
+/** 空操作回调，作为 success/fail/complete 的默认值（需作为值引用，故用 const 箭头） */
+const noop = (result: any): void => {
+  // 忽略入参，空操作
+}
+
+class UvRouter {
+  /** 默认导航配置 */
+  config: RouteConfig = {
+    type: 'navigateTo',
+    url: '',
+    delta: 1,
+    params: {},
+    animationType: 'pop-in',
+    animationDuration: 300,
+    intercept: false,
+    events: {},
+  }
+
+  /** 判断 url 是否带前导 "/"，无则补上 */
+  addRootPath(url: string): string {
+    return url.startsWith('/') ? url : `/${url}`
+  }
+
+  /** 整合路由参数到 URL query */
+  mixinParam(url: string, params: any): string {
+    let newUrl = url
+    if (newUrl != '') {
+      newUrl = this.addRootPath(newUrl)
+    }
+
+    // 判断 url 是否已有 get 参数（含 "?" 与 "="）
+    if (/.*\/.*\?.*=.*/.test(newUrl)) {
+      const query: string = queryParams(params, false) as string
+      newUrl = `${newUrl}&${query}`
+      return newUrl
+    }
+    const query: string = queryParams(params) as string
+    newUrl = `${newUrl}${query}`
+    return newUrl
+  }
+
+  /**
+   * 用默认 config 兜底、逐字段覆盖 options 中显式提供的值。
+   * UTS 无通用对象深合并，这里按 RouteConfig 的已知字段逐一判定。
+   */
+  private overlay(partial: NavigationOptions): RouteConfig {
+    const base = this.config
+
+    const type: string = partial.type != null ? (partial.type as string) : base.type
+    const url: string = partial.url
+    const delta: number = partial.delta != null ? (partial.delta as number) : base.delta
+    // 可选字段读出为可空值，兜底后不可能为 null，统一断言去除可空
+    const params: any = (partial.params != null ? partial.params : base.params) as any
+    const animationType: string =
+      partial.animationType != null ? (partial.animationType as string) : base.animationType
+    const animationDuration: number =
+      partial.animationDuration != null
+        ? (partial.animationDuration as number)
+        : base.animationDuration
+    // middleware 型拦截在 Router.route 层已拆走，这里固定用默认值（旧式 boolean 拦截）
+    const intercept = base.intercept
+    const events: any = (partial.events != null ? partial.events : base.events) as any
+
+    let success: (result: any) => void = noop
+    let fail: (error: any) => void = noop
+    let complete: (result: any) => void = noop
+    if (partial.success != null) {
+      success = partial.success as (result: any) => void
+    }
+    if (partial.fail != null) {
+      fail = partial.fail as (error: any) => void
+    }
+    if (partial.complete != null) {
+      complete = partial.complete as (result: any) => void
+    }
+
+    return {
+      type,
+      url,
+      delta,
+      params,
+      animationType,
+      animationDuration,
+      intercept,
+      events,
+      success,
+      fail,
+      complete,
+    }
+  }
+
+  /** 路由跳转主体：合并配置、防重复、执行导航 */
+  async doRoute(options: NavigationOptions): Promise<void> {
+    const mergeConfig: RouteConfig = this.overlay(options)
+    // 用 url/params 拼接 query
+    mergeConfig.url = this.mixinParam(mergeConfig.url, mergeConfig.params)
+
+    // 与当前页面路径一致时不跳转，防重复点击
+    if (mergeConfig.url == page()) return
+
+    // 拦截器判断（middleware 型拦截在 Router.route 层已拆出，经 customIntercept 执行）
+    const interceptFn = mergeConfig.intercept
+    if (typeof interceptFn == 'function') {
+      const isNext: boolean = await new Promise<boolean>((resolve) => {
+        interceptFn(mergeConfig, resolve)
+      })
+      if (isNext) {
+        this.openPage(mergeConfig)
+      }
+    } else {
+      this.openPage(mergeConfig)
+    }
+  }
+
+  /** 执行底层导航 */
+  openPage(config: RouteConfig): void {
+    const url: string = config.url
+    const delta: number = config.delta
+    const animationType: string = config.animationType
+    const animationDuration: number = config.animationDuration
+    const events: any = config.events
+    const success: (result: any) => void = config.success ?? noop
+    const fail: (error: any) => void = config.fail ?? noop
+    const complete: (result: any) => void = config.complete ?? noop
+
+    if (config.type == 'navigateTo' || config.type == 'to') {
+      uni.navigateTo({
+        url,
+        animationType,
+        animationDuration,
+        events,
+        success,
+        fail,
+        complete,
+      })
+    }
+    if (config.type == 'redirectTo' || config.type == 'redirect') {
+      uni.redirectTo({
+        url,
+        success,
+        fail,
+        complete,
+      })
+    }
+    if (config.type == 'switchTab' || config.type == 'tab') {
+      uni.switchTab({
+        url,
+        success,
+        fail,
+        complete,
+      })
+    }
+    if (config.type == 'reLaunch' || config.type == 'launch') {
+      uni.reLaunch({
+        url,
+        success,
+        fail,
+        complete,
+      })
+    }
+    if (config.type == 'navigateBack' || config.type == 'back') {
+      uni.navigateBack({
+        delta,
+        success,
+        fail,
+        complete,
+      })
+    }
+  }
+}
+
+export default UvRouter

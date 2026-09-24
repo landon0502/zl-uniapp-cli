@@ -20,11 +20,15 @@ import type {
   RouteEvents,
   UniEventChannel,
   RouteDataCacheContext,
+  PluginOptions,
   IRouter,
 } from './types'
 
 /** Event key for route params received via event channel / uni.$emit */
 export const onRouteParamsEventKey = 'onRouteParams'
+
+/** Event key for route data received via event channel / uni.$emit (separate from params, not appended to URL) */
+export const onRouteDataEventKey = 'onRouteData'
 
 /**
  * Event key for back-navigation params.
@@ -38,6 +42,7 @@ export const onRouteParamsOnBackEvtKey = 'onBack'
 interface DataCacheOptions {
   navUrl: string
   params?: unknown
+  data?: unknown
   type?: string
   delta?: number
   backOpenedPage?: boolean
@@ -58,17 +63,29 @@ export default class Router implements IRouter {
   /**
    * Tab bar page paths.
    * Populate with the `pagePath` values from `pages.json` → `tabBar.list`.
+   * Can be configured at construction time via `PluginOptions.tabbarPaths`,
+   * assigned directly, or updated anytime via `setTabbarPaths()`.
    *
    * @example
    * ```typescript
-   * const router = new Router()
+   * // Option 1: constructor option
+   * const router = new Router({ tabbarPaths: ['/pages/home/index', '/pages/mine/index'] })
+   *
+   * // Option 2: direct assignment
    * router.tabbarPaths = ['/pages/home/index', '/pages/mine/index']
+   *
+   * // Option 3: chainable setter
+   * router.setTabbarPaths(['/pages/home/index', '/pages/mine/index'])
    * ```
    */
   tabbarPaths: string[]
 
-  constructor() {
-    this.tabbarPaths = []
+  /**
+   * @param options - Optional Router configuration.
+   *                  Currently consumes `tabbarPaths` to seed the TabBar page path list.
+   */
+  constructor(options?: PluginOptions) {
+    this.tabbarPaths = options?.tabbarPaths ?? []
 
     // Register a global navigateBack interceptor to clean up
     // the data pipeline when pages are popped from the stack
@@ -124,6 +141,20 @@ export default class Router implements IRouter {
   }
 
   /**
+   * Set the tab bar page paths.
+   *
+   * Replaces the current `tabbarPaths` array — equivalent to assigning
+   * `router.tabbarPaths`, but chainable for fluent setup.
+   *
+   * @param paths - Tab bar page paths (with or without leading slash).
+   * @returns `this` for chaining.
+   */
+  setTabbarPaths(paths: string[]): this {
+    this.tabbarPaths = paths
+    return this
+  }
+
+  /**
    * Format a uni.$emit event name for route-specific events.
    * Used for tab-bar pages which don't have an opener event channel.
    *
@@ -145,9 +176,10 @@ export default class Router implements IRouter {
    * For tab-bar pages (no opener channel), uses `uni.$emit`.
    * For normal pages, uses the opener event channel.
    */
-  onRouteChannelHandler({ url, params }: {
+  onRouteChannelHandler({ url, data, params }: {
     url?: string
-    params?: unknown
+    params?: unknown,
+    data?: unknown
   }): void {
     const instance = getHistoryPage(0)
     if (!instance) return
@@ -162,7 +194,13 @@ export default class Router implements IRouter {
         channel?.emit?.(onRouteParamsEventKey, params)
       }
     }
-
+    if (!isUndefined(data) && !isNull(data)) {
+			if (url && this.isTabBarPath(url)) {
+				uni.$emit(this.getUniEventNameByRouterUrl(onRouteDataEventKey, url), data)
+			} else {
+				channel?.emit?.(onRouteDataEventKey, data)
+			}
+		}
   }
 
   /**
@@ -172,7 +210,8 @@ export default class Router implements IRouter {
   routeHandler(options: Record<string, unknown>): void {
     this.onRouteChannelHandler(options as {
       url?: string
-      params?: unknown
+      params?: unknown,
+      data?: unknown
     })
     uvRoute(options)
   }
@@ -208,7 +247,7 @@ export default class Router implements IRouter {
    * - `back`: Remove cached data for the pages being popped.
    * - `to`: Create a new cache entry unless the page is already open (backOpenedPage).
    */
-  handleRouterDataCache({ navUrl, params, type, delta = 0, backOpenedPage }: DataCacheOptions): void {
+  handleRouterDataCache({ navUrl, params, data, type, delta = 0, backOpenedPage }: DataCacheOptions): void {
     // Tab and launch close all pages — clear all cached data
     if (['tab', 'launch'].includes(type ?? '')) {
       this.dataPipeline.clear()
@@ -250,6 +289,7 @@ export default class Router implements IRouter {
         from: this.addRootPath(from?.route),
         to: navUrl,
         params,
+        data: data
       })
     }
   }
@@ -263,9 +303,9 @@ export default class Router implements IRouter {
    *
    * Flow:
    * 1. Normalize the URL
-   * 2. Manage the data pipeline cache
-   * 3. Check backOpenedPage optimization
-   * 4. Run through the interceptor chain
+   * 2. Check backOpenedPage optimization
+   * 3. Run through the interceptor chain
+   * 4. On approval (finalHandler), manage the data pipeline cache then navigate
    * 5. Execute the navigation via routeHandler
    *
    * @param options - Navigation options.
@@ -274,8 +314,6 @@ export default class Router implements IRouter {
   route(options: NavigationOptions): this {
     // Normalize the URL (ensure leading slash, strip query for matching)
     const url = this.addRootPath(this.getNavigatorUrl(options.url))
-
-    this.handleRouterDataCache({ ...options, navUrl: url })
 
     // backOpenedPage optimization: if the target page is already in the stack,
     // navigate back to it instead of pushing a new instance
@@ -311,19 +349,11 @@ export default class Router implements IRouter {
 
     // Build the navigation context for interceptors
     const context: NavigationContext = {
-      router: this,
-      from: getHistoryPage(0),
-      url,
-      type: (options as Record<string, unknown>).type as NavigateType,
-      notIntercept: resolvedNotIntercept,
-      delta: options.delta,
-      backOpenedPage: options.backOpenedPage,
-      params: options.params,
-      success: options.success,
-      fail: options.fail,
-      complete: options.complete,
+        router: this,
+        url,
+        options: { ...options, url },
+        from: getHistoryPage(0)
     }
-
     // Run through the interceptor chain
     this.interceptor.execute({
       context,
@@ -332,6 +362,9 @@ export default class Router implements IRouter {
       customIntercept,
       // The final handler — execute the actual navigation
       finalHandler: () => {
+        // 拦截链全部放行后才写入数据缓存并导航：
+        // 守卫阻断（如未登录跳登录页）时不应留下未发生的导航缓存
+        this.handleRouterDataCache({ ...options, navUrl: url })
         this.routeHandler(options as unknown as Record<string, unknown>)
       },
     })
@@ -430,7 +463,7 @@ export default class Router implements IRouter {
    *
    * @param options - Navigation options (delta defaults to 1).
    */
-  back(options: NavigationOptions = {} as NavigationOptions): void {
+  back(options: Omit<NavigationOptions, 'url'> = {}): void {
     const delta = options?.delta ?? 1
     const backPage = getHistoryPage(-delta)
 
@@ -439,7 +472,7 @@ export default class Router implements IRouter {
       ...options,
       type: 'back',
       success: () => {
-        options?.success?.(undefined)
+        isFunction(options?.success) && options?.success?.(undefined)
 
         if (options.params && backPage) {
           this.routerEvents.invoke(

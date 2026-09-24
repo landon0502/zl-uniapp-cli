@@ -86,6 +86,8 @@ export interface RouteDataCacheContext {
   to: string
   /** Route params passed from source to destination */
   params?: unknown
+  /** Route data passed from source to destination */
+  data?: unknown
   /** Optional onBack callback for back-navigation params delivery */
   onBack?: (params: unknown) => void
 }
@@ -119,6 +121,7 @@ export interface IRouter {
   readonly routerEvents: unknown
   readonly dataPipeline: unknown
   tabbarPaths: string[]
+  setTabbarPaths(paths: string[]): this
   addRootPath(url: string | undefined): string
   getNavigatorUrl(fullUrl: string | undefined): string
   isTabBarPath(path: string): boolean
@@ -127,7 +130,7 @@ export interface IRouter {
   redirect(options: NavigationOptions): void
   tab(options: NavigationOptions): void
   launch(options: NavigationOptions): void
-  back(options?: NavigationOptions): void
+  back(options?: Omit<NavigationOptions, 'url'>): void
 }
 
 // ============================================================================
@@ -147,8 +150,15 @@ export interface NavigationOptions {
 
   /** Route params — passed to the target page via event channel / uni.$emit,
    *  cached in RouteDataPipeline, and retrievable via getPrevRouterDataCache().
-   *  Also used by router.back() for back-navigation data delivery via events.onBack. */
+   *  Also used by router.back() for back-navigation data delivery via events.onBack.
+   *  Note: params are appended to the URL query string. */
   params?: unknown
+
+  /** Route data — passed to the target page via event channel / uni.$emit,
+   *  cached in RouteDataPipeline, and retrievable via getPrevRouterDataCache().
+   *  Unlike params, data is NOT appended to the URL query string,
+   *  making it suitable for sensitive or internal data that should not be visible in the URL. */
+  data?: unknown
 
   /** Page-level event callbacks registered for this navigation */
   events?: RouteEvents
@@ -196,33 +206,29 @@ export interface NavigationOptions {
 }
 
 /**
- * Internal representation of NavigationOptions after normalization.
+ * Navigation context passed to interceptor middleware.
+ *
  * The Router resolves the URL, applies defaults, and enriches with
  * the router instance and source page before passing to interceptors.
+ *
+ * Top-level convenience fields (`url`, `router`, `from`, `params`, `notIntercept`)
+ * are provided for the most common interceptor checks. All other navigation
+ * options (type, delta, data, backOpenedPage, events, success/fail/complete, etc.)
+ * are available through the `options` aggregate field.
  */
 export interface NavigationContext {
   /** Normalized URL (leading slash ensured, query params preserved) */
   url: string
-  /** Navigation type */
-  type: NavigateType
   /** The router instance */
   router: IRouter
   /** Source page record (undefined if called before any page exists) */
   from: RouteRecord | undefined
-  /** Route params */
+  /** Route params (convenience accessor, same as options.params) */
   params?: unknown
-  /** Whether to skip interceptors */
+  /** Whether to skip interceptors (convenience accessor, same as options.notIntercept) */
   notIntercept?: boolean
-  /** Delta for back navigation */
-  delta?: number
-  /** Already-opened page behavior flag */
-  backOpenedPage?: boolean
-  /** Called when navigation succeeds */
-  success?: (result: unknown) => void
-  /** Called when navigation fails */
-  fail?: (error: unknown) => void
-  /** Called when navigation completes (success or fail) */
-  complete?: (result: unknown) => void
+  /** Complete navigation options aggregate — access type, data, delta, events, etc. here */
+  options: NavigationOptions
   /** Allow extensibility for forwarded uni-app options */
   [key: string]: unknown
 }
@@ -232,7 +238,7 @@ export interface NavigationContext {
 // ============================================================================
 
 /**
- * Options passed when instantiating the Router plugin.
+ * Options passed when instantiating the Router.
  * Currently minimal; extensible for future features.
  */
 export interface PluginOptions {
@@ -240,4 +246,11 @@ export interface PluginOptions {
   basePath?: string
   /** Custom route-to-event-name transform function */
   eventNameFormatter?: (eventName: string, url: string) => string
+  /**
+   * Tab bar page paths.
+   * Seeded into the Router at construction; also settable at any time via
+   * `router.tabbarPaths` or `router.setTabbarPaths()`.
+   * Entries may or may not include a leading slash — comparison normalizes both sides.
+   */
+  tabbarPaths?: string[]
 }

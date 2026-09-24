@@ -2,7 +2,7 @@ import uni from '@dcloudio/vite-plugin-uni'
 import eslintPlugin from 'vite-plugin-eslint' // 导入插件
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import { defineConfig } from 'vite'
-import pagesJsonGenerator from './plugins/pages-json-generator'
+import pagesJsonGenerator from '../src/uni_modules/w-router/vite-pages-generator-plugin'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 // https://vitejs.dev/config/
