@@ -47,7 +47,9 @@ useScrollPaging(pagingRef, {
 	}
 })
 
-const init = async () => {}
+const init = async () => {
+	console.log('初始化')
+}
 onReady(async () => {
 	try {
 		skeletons.show(createSkeletons)
